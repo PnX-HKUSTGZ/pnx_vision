@@ -9,6 +9,8 @@
 
 #define DATABUFFER_DEBUG
 
+// 一个互斥锁保护的数据缓冲区
+
 namespace pnx {
 
 template <typename DataType> class DataBuffer {

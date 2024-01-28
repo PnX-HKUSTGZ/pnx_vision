@@ -21,6 +21,7 @@ void signalHandler(int signum) {
 }
 
 int main(int argc, char *argv[]) {
+  // 注册信号处理函数,用于处理退出信号,保证线程释放\关闭相机
   signal(SIGINT, signalHandler);
   signal(SIGHUP, signalHandler);
 
@@ -47,7 +48,7 @@ int main(int argc, char *argv[]) {
                           std::ref(thread_manager));
   thread_manager.SendId = send_thread.native_handle();
 
-  // 启动线程
+  // 等待主线程
   generate_thread.join();
   process_thread.join();
   receive_thread.join();

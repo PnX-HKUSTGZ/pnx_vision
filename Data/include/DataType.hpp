@@ -1,4 +1,7 @@
 
+/**
+ some useful data type
+*/
 #ifndef DATATYPE_H
 #define DATATYPE_H
 

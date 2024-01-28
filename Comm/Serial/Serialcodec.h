@@ -4,9 +4,6 @@
 #include "DataType.hpp"
 #include "serial.h"
 
-#include <chrono>
-#include <exception>
-
 namespace pnx {
 
 // Read & Write from or to the serial port

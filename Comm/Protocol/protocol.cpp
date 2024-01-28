@@ -3,11 +3,15 @@
 #include "bsp_crc8.h"
 #include <cstring>
 
+// header (1) + data float*2 (4*2) + crc8 (1)
+constexpr int send_data_len = 10; // default 10 bits,
+// header (1) + data float*3 (4*3) + crc8 (1)
+constexpr int recv_data_len = 14;
+
 namespace pnx {
 
 std::string Protocol::encode(const VisionSendData &data) {
-  static uint16_t tx_buf_len = 10; // header (1) + data float*2 (4*2) + crc8 (1)
-  static std::string s = "";       // restoration of modes
+  static std::string s = ""; // restoration of modes
   static uint8_t tx_buf[255];
 
   tx_buf[0] = 0xa5;
@@ -18,14 +22,14 @@ std::string Protocol::encode(const VisionSendData &data) {
   // crc8 check
   tx_buf[9] = Get_CRC8_Check(&tx_buf[0], 9);
   // put tx_buf into s
-  s.assign((char *)tx_buf, tx_buf_len);
+  s.assign((char *)tx_buf, send_data_len);
   return s;
 }
 
 bool Protocol::decode(const std::string &s, VisionRecvData &decoded_data) {
   static char ch_arr[255];
   s.copy(ch_arr, s.size());
-  if (!CRC8_Check_Sum((uint8_t *)ch_arr, s.size()))
+  if (!CRC8_Check_Sum((uint8_t *)ch_arr, recv_data_len))
     return false;
   else // decode roll pitch yaw
   {

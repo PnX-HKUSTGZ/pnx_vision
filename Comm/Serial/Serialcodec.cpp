@@ -1,7 +1,8 @@
-#define MAX_DATA_LENGTH 50
-#define MIN_DATA_LENGTH 10
-
 #include "Serialcodec.h"
+#include <chrono>
+#include <exception>
+
+constexpr int recv_data_len = 14; // default 10 bits,
 
 namespace pnx {
 
@@ -19,10 +20,6 @@ bool SerialCodec::try_get_recv_data_for(VisionRecvData &recv_data,
   try {
     auto start = clk::now();
 
-    volatile static int data_len = 10; // default 10 bits,
-    // auto detect string stream from serial port and update
-    // no need for handcraft modification
-
     static bool pack_start = false;
     static std::string recv_buf;         // receive buffer
     static std::string tmp_str;          // receive some data from each recv
@@ -37,8 +34,6 @@ bool SerialCodec::try_get_recv_data_for(VisionRecvData &recv_data,
         find_pos = tmp_str.find_first_of(static_cast<char>(PROTOCOL_CMD_ID));
 
         // step1: handle newly received data
-        // string----------------------------------
-
         // package has not started && find frame header : 0XA5
         if (!pack_start && find_pos != std::string::npos) {
           pack_start = true;
@@ -62,8 +57,8 @@ bool SerialCodec::try_get_recv_data_for(VisionRecvData &recv_data,
           recv_buf.append(tmp_str.substr(0, find_pos));
         }
 
-        // step3: check data integrity and unpack data
-        if (recv_buf.size() >= 10) {
+        // step2: check data integrity and unpack data
+        if (recv_buf.size() >= recv_data_len) {
           // 将接收到的数据转成解码成结构体
           if (decode(recv_buf, recv_data)) {
             pack_start = false;

@@ -14,7 +14,7 @@ std::string Protocol::encode(const VisionSendData &data) {
   static std::string s = ""; // restoration of modes
   static uint8_t tx_buf[255];
 
-  tx_buf[0] = 0xa5;
+  tx_buf[0] = PROTOCOL_CMD_ID;
   // put data.pitch into tx_buf[1-4]
   memcpy(&tx_buf[1], &data.pitch, 4);
   // put data.yaw into tx_buf[5-8]

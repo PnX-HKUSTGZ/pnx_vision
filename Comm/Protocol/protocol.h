@@ -12,18 +12,9 @@ namespace pnx {
 class Protocol {
 
 protected:
-  static short constexpr PROTOCOL_CMD_ID = 0XA5;
+  static short constexpr start_of_frame = 0XA5;
 
 public:
-  struct protocl_frame {
-
-    uint8_t sof;
-    float roll;
-    float pitch;
-    float yaw;
-    uint8_t crc8;
-  };
-
   static std::string
   encode(const VisionSendData
              &data); // Encode data from VisionSendData to std::string

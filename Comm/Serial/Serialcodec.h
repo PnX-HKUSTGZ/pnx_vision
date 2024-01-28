@@ -6,7 +6,7 @@
 
 namespace pnx {
 
-// Read & Write from or to the serial port
+// Read & Write from / to the serial port
 // Ensure integrity of receieved data pack thourgh this
 // wrappered class combined with Serial and Protocol
 /**
@@ -24,8 +24,6 @@ public:
 
   /**
    * @brief encode and send data to the serial port
-   * @param state target state,
-   * @param type target type
    * @param pitch
    * @param yaw
    * @return true if send successfully, false otherwise

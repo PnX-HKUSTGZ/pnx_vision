@@ -73,11 +73,7 @@ struct TargetInfo {
 struct VisionSendData {
   // strut initiate function
   VisionSendData() {}
-  VisionSendData(TargetState state_, TargetType type_, float pitch_, float yaw_)
-      : state(state_), type(type_), pitch(pitch_), yaw(yaw_) {}
-
-  TargetState state;
-  TargetType type;
+  VisionSendData(float pitch_, float yaw_) : pitch(pitch_), yaw(yaw_) {}
 
   float pitch;
   float yaw; // formatted in float data
@@ -85,18 +81,12 @@ struct VisionSendData {
 
 struct VisionRecvData {
   VisionRecvData() {}
-  VisionRecvData(SelfColor self_color_, WorkMode mode_, BulletSpeed speed_,
-                 float pitch_, float yaw_, float roll_)
-      : self_color(self_color_), mode(mode_), speed(speed_), pitch(pitch_),
-        yaw(yaw_), roll(roll_) {}
+  VisionRecvData(float pitch_, float yaw_, float roll_)
+      : pitch(pitch_), yaw(yaw_), roll(roll_) {}
 
-  SelfColor self_color;
-  WorkMode mode;
-  BulletSpeed speed;
-
+  float roll;
   float pitch;
   float yaw;
-  float roll;
 };
 } // namespace pnx
 

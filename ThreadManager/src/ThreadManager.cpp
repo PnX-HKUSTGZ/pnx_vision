@@ -99,8 +99,7 @@ void ThreadManager::Exit() {
 
   while (true) {
     _send_buffer.Get(temp_send, nullptr);
-    _serial.send_data(temp_send.state, temp_send.type, temp_send.pitch,
-                      temp_send.yaw);
+    _serial.send_data(temp_send.pitch, temp_send.yaw);
     std::this_thread::sleep_for(Ms(10));
   }
 }

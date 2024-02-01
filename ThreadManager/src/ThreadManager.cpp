@@ -13,9 +13,10 @@ namespace pnx {
 // 最佳实践是将参数放在配置文件中,然后在这里读取,而不是写死在代码中
 void ThreadManager::InitAll() {
   // 打开串口
-  if (!_serial.open_port("/dev/ttyUSB0")) {
+  if (!_serial.open_port("/dev/ttyACM0")) {
     std::cout << "open_port failed" << std::endl;
-    exit(250);
+    if (!_serial.open_port("/dev/ttyACM1"))
+      exit(250);
   }
   _serial.rm_init();
 

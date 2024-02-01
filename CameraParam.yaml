@@ -1,0 +1,24 @@
+# YAML
+---
+nWidthValue: 1440
+nHeightValue: 1080
+nOffsetXValue: 0
+nOffsetYValue: 0
+bSetBoolValue5: 0
+bSetBoolValue1: 0
+PixelFormat: 0xaacd11
+nBinningHorizontal: 1
+nBinningVertical: 1
+nDecimationHorizontal: 1
+nDecimationVertical: 1
+nAcquisitionBurstFrameCountValue: 1
+fFPSValue: 404.0000
+nSetBoolValue3: 1
+fExposureTime: 2000.0000
+fGainvalue: 11
+nGainAuto: 0
+nBlacklevelvalue: 240
+bSetBoolValue2: 1
+fGammaValue: 0.7
+bSetBoolValue4: 0
+_nImageOrientation: 0

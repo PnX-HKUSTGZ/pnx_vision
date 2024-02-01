@@ -6,14 +6,14 @@ set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(OpenCV REQUIRED)
-find_package(Eigen3 REQUIRED)
 
 include_directories(
         ${OpenCV_INCLUDE_DIRS}
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${CMAKE_CURRENT_BINARY_DIR}
-        ${EIGEN3_INCLUDE_DIRS}
 )
+
+file(GLOB SDK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/IndustrialCamera/lib/linux/*)
 
 include_directories(
         AngleSolver/include
@@ -23,6 +23,7 @@ include_directories(
         Comm/Serial/
         Data/include
         ThreadManager/include
+        IndustrialCamera/include
 )
 
 file(GLOB_RECURSE source
@@ -32,12 +33,14 @@ file(GLOB_RECURSE source
         Comm/*
         Serial/*
         ThreadManager/src/*
+        IndustrialCamera/src/*
         )
 
 add_executable(pnx_demo main.cpp ${source})
 
+
 target_link_libraries(pnx_demo
         ${OpenCV_LIBS}
-        ${Eigen3_LIBRARIES}
+        ${SDK_PATH}
         -lpthread -lm
         )

@@ -28,13 +28,7 @@ namespace hnurm
          * @brief 
          * 
          */
-        HKcam()
-        {
-            _cfg_path = "../CameraParam.xml";
-            _id = "";
-        }
-
-        HKcam(const cv::FileNode &cfg_node);
+        HKcam();
 
         ~HKcam();
 
@@ -62,7 +56,7 @@ namespace hnurm
          * 
          */
 //        bool GetFrame(cv::Mat& img);
-        bool GetFrame(ImgInfo& img);
+        bool GetFrame(cv::Mat& img);
 
         /**
          * @brief Set params for camera

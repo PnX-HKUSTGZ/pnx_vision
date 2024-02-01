@@ -31,7 +31,7 @@ bool SerialCodec::try_get_recv_data_for(VisionRecvData &recv_data,
       // step1: try to receive str from serial port for up to milli_secs
       // milliseconds
       if (Serial::try_recv_for(tmp_str, milli_secs)) {
-        find_pos = tmp_str.find_first_of(static_cast<char>(PROTOCOL_CMD_ID));
+        find_pos = tmp_str.find_first_of(static_cast<char>(start_of_frame));
 
         // step1: handle newly received data
         // package has not started && find frame header : 0XA5

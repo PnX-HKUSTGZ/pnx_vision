@@ -39,20 +39,20 @@ int main(int argc, char *argv[]) {
   thread_manager.ProcessId = process_thread.native_handle();
 
   // 接收线程
-  std::thread receive_thread(&pnx::ThreadManager::ReceiveThread,
-                             std::ref(thread_manager));
-  thread_manager.ReceiveId = receive_thread.native_handle();
+  // std::thread receive_thread(&pnx::ThreadManager::ReceiveThread,
+  //                            std::ref(thread_manager));
+  // thread_manager.ReceiveId = receive_thread.native_handle();
 
-  // 发送线程
-  std::thread send_thread(&pnx::ThreadManager::SendThread,
-                          std::ref(thread_manager));
-  thread_manager.SendId = send_thread.native_handle();
+  // // 发送线程
+  // std::thread send_thread(&pnx::ThreadManager::SendThread,
+  //                         std::ref(thread_manager));
+  // thread_manager.SendId = send_thread.native_handle();
 
   // 等待主线程
   generate_thread.join();
   process_thread.join();
-  receive_thread.join();
-  send_thread.join();
+  // receive_thread.join();
+  // send_thread.join();
 
   return 0;
 }

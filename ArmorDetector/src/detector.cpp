@@ -236,6 +236,11 @@ int Detector::detect_for_target(const cv::Mat &frame, int color_label,
                                 pnx::TargetInfo &target) {
   auto armors = detect(frame, color_label);
 
+  cv::Mat raw= frame.clone();
+  drawResults(raw);
+  cv::imshow("raw", raw);
+  cv::waitKey(1);
+
   if (armors.empty())
     return 0;
 

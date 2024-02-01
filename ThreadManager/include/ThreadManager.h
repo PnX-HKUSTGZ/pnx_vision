@@ -11,6 +11,7 @@
 #include <opencv2/videoio.hpp>
 #include <string>
 #include <thread>
+#include "Camera.h"
 
 using namespace std;
 using namespace cv;
@@ -70,6 +71,7 @@ private:
   SerialCodec _serial;      /// 串口解析
   rm_auto_aim::Detector dt; /// 装甲板检测器
   VideoCapture _camera;     /// 相机
+  
 
   DataBuffer<VisionRecvData> _receive_buffer; /// 接收缓冲区
   DataBuffer<VisionSendData> _send_buffer;    /// 发送缓冲区

@@ -13,17 +13,17 @@ namespace pnx {
 // 最佳实践是将参数放在配置文件中,然后在这里读取,而不是写死在代码中
 void ThreadManager::InitAll() {
   // 打开串口
-  if (!_serial.open_port("/dev/ttyACM0")) {
-    std::cout << "open_port failed" << std::endl;
-    if (!_serial.open_port("/dev/ttyACM1"))
-      exit(250);
-  }
-  _serial.rm_init();
+  // if (!_serial.open_port("/dev/ttyACM0")) {
+  //   std::cout << "open_port failed" << std::endl;
+  //   if (!_serial.open_port("/dev/ttyACM1"))
+  //     exit(250);
+  // }
+  // _serial.rm_init();
 
-  if (!_camera.open("0")) {
-    std::cout << "open camera failed" << std::endl;
-    std::exit(-1);
-  }
+  // if (!_camera.open("0")) {
+  //   std::cout << "open camera failed" << std::endl;
+  //   std::exit(-1);
+  // }
 
   // ----------------------------------------------------
   int min_lightness = 80;
@@ -37,10 +37,8 @@ void ThreadManager::InitAll() {
       .max_angle = 35.0};
   rm_auto_aim::Detector::LightParams light_params = {
       .min_ratio = 0.1, .max_ratio = 0.55, .max_angle = 40.0};
-  auto model_path =
-      "/home/rm/hnu-yuelu-rm2023-vision/ArmorDetectorT/model/mlp.onnx";
-  auto label_path =
-      "/home/rm/hnu-yuelu-rm2023-vision/ArmorDetectorT/model/label.txt";
+  auto model_path = "/home/neo/pnx/ArmorDetector/model/mlp.onnx";
+  auto label_path = "/home/neo/pnx/ArmorDetector/model/label.txt";
   dt.initModel(min_lightness, detect_color, light_params, armor_params,
                model_path, label_path);
 
@@ -53,13 +51,19 @@ void ThreadManager::Exit() {
 
 // 从相机buffer中获取数据,并进行处理
 [[noreturn]] void ThreadManager::GenerateThread() {
+  hnurm::HKcam _hkcam; /// 海康相机
+  // _hkcam.CloseCam();
+  // _hkcam.OpenCam("DA1195491");
   cv::Mat temp_frame;
   while (true) {
     // 判断是否成功获取图像
-    _camera >> temp_frame;
-    // 将图像存入缓冲区
-    _img_buffer.Update(temp_frame);
-
+    // _camera >> temp_frame;
+    if (_hkcam.GetFrame(temp_frame))
+      // 将图像存入缓冲区
+      _img_buffer.Update(temp_frame);
+    else {
+      std::cout << "get frame failed" << std::endl;
+    }
     // 可能还需要加入时间戳信息,用于对齐串口数据
 
     std::this_thread::sleep_for(Ms(10));
@@ -86,7 +90,14 @@ void ThreadManager::Exit() {
       }
       int enemy_color = 0; // 写死红色,实际上需要从串口中获取
       // 推理
-      dt.detect_for_target(temp_frame, enemy_color, temp_armor);
+      if (dt.detect_for_target(temp_frame, enemy_color, temp_armor) == 0) {
+        temp_send.pitch = 0;
+        temp_send.yaw = 0;
+
+      } else {
+        temp_send.pitch = temp_armor.pitch;
+        temp_send.yaw = temp_armor.yaw;
+      }
       _send_buffer.Update(temp_send);
     }
     // 处理完之后还需要进行坐标转换\运动预测\子弹下落补偿等,再放入发送buffer中
